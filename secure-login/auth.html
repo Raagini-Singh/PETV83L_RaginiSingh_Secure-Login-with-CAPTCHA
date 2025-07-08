@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Access Granted</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+
+    :root {
+      --neon-green: #00ff41;
+      --neon-green-dark: #00cc33;
+      --cyber-blue: #0a4a7c;
+    }
+
+    body {
+      background-color: #000;
+      color: var(--neon-green);
+      font-family: 'Fira Code', monospace;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .typewriter {
+      white-space: pre;
+      font-size: 16px;
+      max-width: 90vw;
+      border-left: 2px solid var(--neon-green);
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .ascii {
+      font-size: 14px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green);
+    }
+    
+    .ascii pre {
+      display: inline-block;
+      font-family: 'Fira Code', monospace;
+      line-height: 1;
+      text-align: center;
+      margin: 0;
+      white-space: pre;
+      overflow: hidden;
+      animation: asciiGlow 3s infinite alternate;
+      padding: 15px;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 5px;
+    }
+    
+    @keyframes asciiGlow {
+      0% { text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green); }
+      100% { text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 30px var(--neon-green); }
+    }
+
+    /* Scanlines effect */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        transparent 0%, 
+        rgba(32, 128, 32, 0.05) 2%, 
+        transparent 3%,
+        rgba(32, 128, 32, 0.05) 3%
+      );
+      background-size: 100% 4px;
+      z-index: 10;
+      pointer-events: none;
+      animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100%; }
+    }
+
+    .glass-container {
+      background: rgba(0, 20, 0, 0.3);
+      backdrop-filter: blur(4px);
+      border-radius: 8px;
+      border: 1px solid rgba(0, 255, 65, 0.3);
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+      padding: 25px;
+      margin: 20px;
+      animation: glow 2s infinite alternate;
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      max-width: 600px;
+    }
+    
+    .glass-container:hover {
+      transform: translateY(-5px);
+    }
+    
+    .typewriter {
+      border-left: none;
+      text-shadow: 0 0 5px rgba(0, 255, 65, 0.7);
+      position: relative;
+    }
+    
+    .typewriter::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 16px;
+      background: var(--neon-green);
+      right: -15px;
+      bottom: 0;
+      animation: blink 1s step-start infinite;
+    }
+    
+    @keyframes glow {
+      0% { box-shadow: 0 0 15px rgba(0, 255, 65, 0.5); }
+      100% { box-shadow: 0 0 25px rgba(0, 255, 65, 0.8); }
+    }
+
+    /* Grid background */
+    .glass-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      z-index: -1;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 20px 20px; }
+    }
+
+    /* Logo/emblem */
+    .hackdoor-emblem {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green);
+      animation: textPulse 2s infinite alternate;
+      padding: 10px;
+      border: 1px solid rgba(0, 255, 65, 0.3);
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+    
+    @keyframes textPulse {
+      0% { text-shadow: 0 0 10px var(--neon-green); }
+      100% { text-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green); }
+    }
+
+    /* Control panel buttons */
+    .control-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 30px;
+      justify-content: center;
+    }
+
+    .control-btn {
+      background: rgba(0, 255, 65, 0.1);
+      border: 1px solid var(--neon-green);
+      border-radius: 5px;
+      color: var(--neon-green);
+      padding: 12px 20px;
+      font-family: 'Fira Code', monospace;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .control-btn:hover {
+      background: rgba(0, 255, 65, 0.2);
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+    }
+
+    .control-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .control-btn:hover::before {
+      left: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="matrix"><canvas id="matrixRain"></canvas></div>
+
+  <div class="hackdoor-emblem">[ HACKDOOR SECURE TERMINAL ]</div>
+
+  <div class="glass-container">
+    <div class="ascii" id="asciiArt">
+<pre>██╗  ██╗ █████╗  ██████╗██╗  ██╗██████╗  ██████╗  ██████╗ ██████╗ 
+██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗██╔═══██╗██╔══██╗
+███████║███████║██║     █████╔╝ ██║  ██║██║   ██║██║   ██║██████╔╝
+██╔══██║██╔══██║██║     ██╔═██╗ ██║  ██║██║   ██║██║   ██║██╔══██╗
+██║  ██║██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝╚██████╔╝██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝</pre>
+    </div>
+    
+    <div class="typewriter" id="typeText"></div>
+    
+    <div class="control-panel">
+      <button class="control-btn" onclick="alert('Scanning network...')">NETWORK SCAN</button>
+      <button class="control-btn" onclick="alert('Crypto module loaded!')">ENCRYPTION</button>
+      <button class="control-btn" onclick="window.location.href='login.html'">LOGOUT</button>
+      <button class="control-btn" onclick="alert('Terminal command mode activated')">TERMINAL</button>
+    </div>
+  </div>
+
+  <script>
+    const text = `
+[ACCESS GRANTED]
+Initializing Secure Session...
+Performing handshake... Complete
+Verifying Encryption... Success
+Authentication confirmed
+Welcome, ${localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail') || 'user@unknown.com'}
+System ready. Launching advanced toolset...
+
+> HACKDOOR v5.1.3 ADVANCED CYBERSECURITY PORTAL READY
+> All systems nominal. Awaiting input...
+`;
+
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typeText").textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+
+    typeWriter();
+
+    // MATRIX RAIN EFFECT
+    const canvas = document.getElementById('matrixRain');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // More varied characters for matrix rain
+    const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px Fira Code";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrix.charAt(Math.floor(Math.random() * matrix.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>

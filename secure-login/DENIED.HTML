@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Access Denied</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+
+    :root {
+      --neon-red: #ff3a3a;
+      --neon-red-dark: #cc0000;
+    }
+
+    body {
+      background-color: #000;
+      color: var(--neon-red);
+      font-family: 'Fira Code', monospace;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .typewriter {
+      white-space: pre;
+      font-size: 16px;
+      max-width: 90vw;
+      border-left: 2px solid var(--neon-red);
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .ascii {
+      font-size: 14px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--neon-red);
+      text-shadow: 0 0 10px var(--neon-red);
+    }
+
+    /* Scanlines effect */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        transparent 0%, 
+        rgba(128, 32, 32, 0.05) 2%, 
+        transparent 3%,
+        rgba(128, 32, 32, 0.05) 3%
+      );
+      background-size: 100% 4px;
+      z-index: 10;
+      pointer-events: none;
+      animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100%; }
+    }
+
+    .glass-container {
+      background: rgba(20, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      padding: 25px;
+      margin: 20px;
+      animation: glow 2s infinite alternate;
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      max-width: 600px;
+    }
+    
+    .typewriter {
+      border-left: none;
+      text-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+      position: relative;
+    }
+    
+    .typewriter::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 16px;
+      background: var(--neon-red);
+      right: -15px;
+      bottom: 0;
+      animation: blink 1s step-start infinite;
+    }
+    
+    @keyframes glow {
+      0% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); }
+      100% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); }
+    }
+
+    /* Warning sign */
+    .warning-sign {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 60px;
+      color: var(--neon-red);
+      text-shadow: 0 0 10px var(--neon-red);
+    }
+
+    /* Back button */
+    .back-btn {
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid var(--neon-red);
+      border-radius: 5px;
+      color: var(--neon-red);
+      padding: 12px 20px;
+      font-family: 'Fira Code', monospace;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 0, 0, 0.2);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+
+    .back-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .back-btn:hover::before {
+      left: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="matrix"><canvas id="matrixRain"></canvas></div>
+
+  <div class="warning-sign">⚠</div>
+
+  <div class="glass-container">
+    <div class="ascii" id="asciiArt">
+    ██╗    ██╗ █████╗ ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ 
+    ██║    ██║██╔══██╗██╔══██╗████╗  ██║██║████╗  ██║██╔════╝ 
+    ██║ █╗ ██║███████║██████╔╝██╔██╗ ██║██║██╔██╗ ██║██║  ███╗
+    ██║███╗██║██╔══██║██╔══██╗██║╚██╗██║██║██║╚██╗██║██║   ██║
+    ╚███╔███╔╝██║  ██║██║  ██║██║ ╚████║██║██║ ╚████║╚██████╔╝
+     ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+    </div>
+    
+    <div class="typewriter" id="typeText"></div>
+    
+    <button class="back-btn" onclick="window.location.href='login.html'">RETURN TO LOGIN</button>
+  </div>
+
+  <script>
+    const text = `
+[ACCESS DENIED]
+Initializing Secure Session...
+Performing handshake... FAILED
+Verifying Encryption... ERROR
+Authentication rejected
+Invalid credentials detected
+Connection rejected by firewall
+Unauthorized access attempt logged
+IP Address: ${(Math.floor(Math.random() * 255) + 1)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}
+Timestamp: ${new Date().toISOString()}
+Session terminated
+System locked.
+`;
+
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typeText").textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+
+    typeWriter();
+
+    // MATRIX RAIN EFFECT - red theme
+    const canvas = document.getElementById('matrixRain');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // More varied characters for matrix rain
+    const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#F00"; // Red for the denied page
+      ctx.font = fontSize + "px Fira Code";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrix.charAt(Math.floor(Math.random() * matrix.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>

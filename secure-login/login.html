@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hackdoor - Cyber Security Portal</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grid-overlay"></div>
+
+  <div class="main-header">
+    <h1 class="main-title">Hackdoor<span class="terminal-cursor"></span></h1>
+    <p class="main-subtitle">ADVANCED CYBERSECURITY PORTAL</p>
+  </div>
+
+  <div class="container">
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label for="username">USERNAME / EMAIL</label>
+        <div class="input-container">
+          <input type="text" id="username" name="username" placeholder="root@hackdoor.sys" required>
+        </div>
+        <div class="error-message" id="usernameError">Invalid username format</div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">PASSWORD</label>
+        <div class="input-container" style="position: relative;">
+          <input type="password" id="password" name="password" placeholder="Enter secure password" autocomplete="new-password" required>
+          <span class="toggle-password" onclick="togglePassword()" title="Show/Hide Password">👁️</span>
+        </div>
+        <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
+      </div>
+      <div class="password-requirements" id="passwordRules">
+  Password must include:
+  <ul>
+    <li id="rule-length">✔ Min 8 characters</li>
+    <li id="rule-upper">✔ Uppercase letter</li>
+    <li id="rule-lower">✔ Lowercase letter</li>
+    <li id="rule-number">✔ Number</li>
+    <li id="rule-special">✔ Special character</li>
+  </ul>
+</div>
+
+
+      <div class="form-group">
+        <label for="captcha">SECURITY VERIFICATION</label>
+        <div class="captcha-container">
+  <img id="captchaImage" src="Hackdoor_Captcha/captcha-images/cap1.png" alt="CAPTCHA" style="width: 100%; border-radius: 5px; margin-bottom: 10px;" />
+  <button type="button" class="refresh-btn" onclick="generateImageCaptcha()">🔄 REFRESH</button>
+</div>
+
+<div class="input-container">
+  <input type="text" id="captchaInput" name="captchaInput" placeholder="Enter CAPTCHA code" required>
+</div>
+<div class="error-message" id="captchaError">Invalid CAPTCHA code</div>
+
+  
+        <div class="error-message" id="captchaError">Invalid CAPTCHA code</div>
+      </div>
+
+      <button type="submit" class="login-btn">🔐 AUTHENTICATE</button>
+
+      <div class="success-message" id="successMessage">
+        Access granted! Initializing secure session...
+      </div>
+    </form>
+
+    <div class="footer">
+      <p>PROTECTED BY HACKDOOR QUANTUM SECURITY SYSTEM v5.1.3</p>
+      <p>© 2025 CyberDefense Division - All transmissions encrypted</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

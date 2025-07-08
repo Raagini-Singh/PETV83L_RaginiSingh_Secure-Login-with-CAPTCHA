@@ -1,0 +1,505 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --neon-green: #00ff41;
+  --neon-green-dark: #00cc33;
+  --neon-red: #ff3a3a;
+  --bg-dark: #0a0a0a;
+  --bg-dark-blue: #1a1a2e;
+  --cyber-blue: #16213e;
+  --text-glow: 0 0 10px rgba(0, 255, 65, 0.7);
+}
+
+body {
+  font-family: 'Fira Code', monospace;
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-blue) 50%, var(--cyber-blue) 100%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--neon-green);
+  overflow: hidden;
+  padding: 2vh;
+  position: relative;
+  
+  /* Add scanlines effect */
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      transparent 0%, 
+      rgba(32, 128, 32, 0.05) 2%, 
+      transparent 3%,
+      rgba(32, 128, 32, 0.05) 3%
+    );
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+  }
+}
+
+@keyframes scanline {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+.grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+  z-index: -1;
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.main-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--neon-green), var(--neon-green-dark));
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #000;
+  animation: logoSpin 4s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes logoSpin {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+}
+
+.main-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+.main-subtitle {
+  font-size: 16px;
+  color: var(--neon-green-dark);
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--neon-green);
+  border-radius: 10px;
+  padding: 2vh;
+  width: 90vw;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 65, 0.3),
+    inset 0 0 20px rgba(0, 255, 65, 0.1);
+  position: relative;
+  backdrop-filter: blur(10px);
+  animation: containerGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes containerGlow {
+  0% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.3), inset 0 0 20px rgba(0, 255, 65, 0.1); }
+  100% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.5), inset 0 0 30px rgba(0, 255, 65, 0.2); }
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #00ff41;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input-container {
+  position: relative;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--neon-green);
+  border-radius: 5px;
+  color: var(--neon-green);
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
+  border-color: var(--neon-green);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  background: rgba(0, 255, 65, 0.1);
+  transform: scale(1.02);
+}
+
+input::placeholder {
+  color: rgba(0, 255, 65, 0.5);
+}
+
+/* Add glitch effect for password input */
+.glitch-effect {
+  animation: glitch 0.3s ease;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* Error shake animation */
+.error-shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.captcha-container {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--neon-green);
+  border-radius: 5px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.captcha-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 255, 65, 0.2),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.captcha-display {
+  background: #000;
+  color: var(--neon-green);
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
+  user-select: none;
+  position: relative;
+}
+
+.refresh-btn {
+  background: none;
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.refresh-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--neon-green);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.refresh-btn:hover {
+  color: #000;
+}
+
+.refresh-btn:hover::before {
+  left: 0;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(45deg, var(--neon-green), var(--neon-green-dark));
+  border: none;
+  border-radius: 5px;
+  color: #000;
+  font-family: 'Fira Code', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+.login-btn:hover {
+  background: linear-gradient(45deg, var(--neon-green-dark), var(--neon-green));
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+  transform: translateY(-2px);
+}
+
+.login-btn:hover::before {
+  left: 100%;
+  transition: all 0.5s ease;
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 10px;
+  color: rgba(0, 255, 65, 0.6);
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 20px;
+  background: var(--neon-green);
+  animation: blink 1s infinite;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.error-message {
+  color: var(--neon-red);
+  font-size: 11px;
+  margin-top: 5px;
+  display: none;
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+.success-message {
+  color: var(--neon-green);
+  font-size: 14px;
+  margin-top: 15px;
+  display: none;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid var(--neon-green);
+  background: rgba(0, 255, 65, 0.1);
+  border-radius: 5px;
+}
+
+.success-animation {
+  animation: successPulse 1.5s infinite;
+}
+
+@keyframes successPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.particle {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: var(--neon-green);
+  pointer-events: none;
+  animation: float 15s infinite linear;
+  box-shadow: 0 0 5px var(--neon-green);
+  opacity: 0.7;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.7; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+.password-requirements {
+  font-size: 11px;
+  color: var(--neon-green);
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--neon-green);
+  border-radius: 5px;
+  display: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.password-requirements::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 255, 65, 0.05) 10px,
+    rgba(0, 255, 65, 0.05) 20px
+  );
+  animation: backgroundMove 30s linear infinite;
+  z-index: -1;
+}
+
+@keyframes backgroundMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.password-requirements ul {
+  padding-left: 20px;
+  list-style: none;
+}
+
+.password-requirements li {
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-left: 20px;
+}
+
+.password-requirements li::before {
+  content: '❌';
+  position: absolute;
+  left: 0;
+}
+
+.password-requirements li.valid {
+  color: var(--neon-green);
+}
+
+.password-requirements li.valid::before {
+  content: '✅';
+}
+
+.password-requirements li.invalid {
+  color: var(--neon-red);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--neon-green);
+  user-select: none;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  opacity: 0.3; /* Start with low opacity until user types */
+  z-index: 5;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.toggle-password:hover {
+  color: var(--neon-green-dark);
+  transform: translateY(-50%) scale(1.2);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.toggle-password.active {
+  opacity: 1;
+  color: var(--neon-green);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
