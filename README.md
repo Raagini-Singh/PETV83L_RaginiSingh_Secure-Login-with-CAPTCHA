@@ -1,7 +1,8 @@
 ﻿# Secure Login Portal with CAPTCHA Verification
 
 > **Project Title:** Secure Login Portal with CAPTCHA Verification  
-> **Author:** Ragini Singh  
+> **Author:** Ragini Singh
+> Reg no.: 12419137
 > **Course Code:** PETV83L  
 > **Date:** July 2025
 
